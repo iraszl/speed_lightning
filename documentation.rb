@@ -25,6 +25,7 @@ customer_collections_status = {
 create_cl_response = client.create_speed_checkout_link(amount, success_url, currency, metadata, customer_collections_status)
 puts create_cl_response["id"] # id of the checkout link, needed to retrieve it later
 puts create_cl_response["url"] # url of the checkout link, show to customer so they can pay
+# pay the invoice with test bitcoins using: https://www.ln.dev
 
 # Retrieve a checkout link by id:
 id = create_cl_response["id"]
