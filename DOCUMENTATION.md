@@ -24,6 +24,28 @@ client = SpeedLightning::Client.new(secret_key: ENV["SPEED_API_SECRET"])
 ```
 ## Checkout Link Object
 
+### Available Parameters
+
+* id: speed payment id
+* amount: payment amount in satoshis 
+* currency: "SATS" by default
+* url: payment url to be presented to users
+* success_url: url the user is forwarded to after successful payment
+* status: payment status
+* metadata: metadata to link speed payment with ruby application data
+* is_email_enabled: true if user needs to provide email to pay
+* is_phone_enabled: true if user needs to provide phone to pay
+* is_billing_address_enabled: true if user needs to provide billing address to pay
+* is_shipping_address_enabled: true if user needs to provide shipping address to pay
+* livemode: default is false for test mode, true is live
+* created_at: ruby time object
+* updated_at: ruby time object
+* raw_attributes: the raw data returned by the Speed API
+
+### Convenience Methods
+
+* paid? : returns true if payment has been completed
+
 ### Create
 
 Basic usage with only required parameters, the invoice amount and the success return url:
@@ -80,12 +102,8 @@ checkout_link_object = client.create_checkout_link(
 If creation of object is successful, you can get payment data:
 * id of the checkout link, needed to retrieve it later: `checkout_link_object.id`
 * url of the checkout link, show to customer so they can pay: `checkout_link_object.url`
-* status of the payment: `checkout_link_object.status`
 * metadata hash of the payment: `checkout_link_object.metadata`
 * email collection status: `checkout_link_object.is_email_enabled`
-* phone collection status: `checkout_link_object.is_phone_enabled`
-* billing address collection status: `checkout_link_object.is_billing_address_enabled`
-* shipping address collection status: `checkout_link_object.is_shipping_address_enabled`
 * test or live mode: `checkout_link_object.livemode`
 
 To test payments, you can login to speed and pay the invoice with test satoshis: https://www.ln.dev
@@ -95,11 +113,6 @@ To test payments, you can login to speed and pay the invoice with test satoshis:
 Retrieve a checkout link with the checkout link object's id:
 ```
 retrieved_object = client.retrieve_checkout_link(checkout_link_object.id)
-```
-
-Same parameters available as described above in the Create section, in addition to a convenience method that returns true is payment is complete:
-```
-retrieved_object.paid?
 ```
 
 Get metadata of the payment, for example order_id: `retrieved_object.metadata["order_id"]`

@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    speed_lightning (0.1.2)
+    speed_lightning (0.2.0)
       httparty (~> 0.21.0)
 
 GEM
