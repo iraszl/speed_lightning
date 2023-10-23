@@ -1,12 +1,12 @@
 require_relative "speed_lightning/version"
-require 'uri'
-require 'net/http'
+require 'httparty'
 require 'base64'
 require 'json'
 
 module SpeedLightning
   class Error < StandardError; end
   class Client
+    include HTTParty
     attr_accessor :api_secret
     API_URL = "https://api.tryspeed.com/"
 
@@ -15,19 +15,23 @@ module SpeedLightning
     end
     
     def make_request(endpoint, request_type, body_hash = nil)
-      key = "Basic " + Base64.strict_encode64(@api_secret+":") # no password necessary after colon
-      url = URI(API_URL + endpoint)
-      http = Net::HTTP.new(url.host, url.port)
-      http.use_ssl = true
-      request = request_type.new(url)
-      request["accept"] = 'application/json'
-      request["speed-version"] = '2022-04-15'
-      request["authorization"] = key
-      if body_hash
-        request["content-type"] = 'application/json'
-        request.body = body_hash.to_json
-      end
-      return JSON.parse(http.request(request).read_body)
+      headers = {
+        "Accept" => "application/json",
+        "Speed-Version" => "2022-04-15",
+        "Authorization" => "Basic " + Base64.strict_encode64(@api_secret + ":")
+      }
+      headers["Content-Type"] = "application/json" if body_hash
+      options = { headers: headers }
+      options[:body] = body_hash.to_json if body_hash
+      full_url = API_URL + endpoint
+      response =
+        case request_type
+        when :get
+          self.class.get(full_url, options)
+        when :post
+          self.class.post(full_url, options)
+        end
+      JSON.parse(response.body)
     end
 
     def create_speed_checkout_link(
@@ -50,14 +54,12 @@ module SpeedLightning
         customer_collections_status: customer_collections_status
       }
       endpoint = "checkout-links"
-      request_type = Net::HTTP::Post
-      return make_request(endpoint, request_type, body_hash)
+      return make_request(endpoint, :post, body_hash)
     end
 
     def retrieve_speed_checkout_link(id)
       endpoint = "checkout-links/" + id
-      request_type = Net::HTTP::Get
-      return make_request(endpoint, request_type)
+      return make_request(endpoint, :get)
     end
 
   end
