@@ -22,7 +22,7 @@ Or install it yourself as:
 
 ## Usage
 
-Find full documentation of this gem and more examples under documentation.rb
+Find full documentation of this gem and more examples: [Detailed Documentation](DOCUMENTATION.md)
 
 Optionally, if you are testing this gem without installing in IRB
 ```
@@ -36,27 +36,27 @@ Otherwise once bundled test in your own project:
 
 Initialize the library with Speed test environment secret key
 
-`client = SpeedLightning::Client.new("your_speed_secret_key_here")`
+`client = SpeedLightning::Client.new(secret_key: "your_speed_secret_key_here")`
 
-create a new checkout link with required parameters: invoice amount, success return url
+create a new checkout link with required parameters in test mode: invoice amount, success return url
 
-`response = client.create_speed_checkout_link(777, "https://yourwebsite.com/thank_you")`
+`response = client.create_checkout_link(777, "https://your_website.com/thank_you")`
 
 get speed checkout url with QR code and LN invoice:
 
-`puts response["url"]`
+`puts response.url`
 
 get speed checkout ID:
 
-`puts response["id"]`
+`puts checkout_id = response.id`
 
 get invoice status
 
-`response = client.retrieve_speed_checkout_link(checkout_id)`
+`response = client.retrieve_checkout_link(checkout_id)`
 
 get payment status
 
-`puts response["status"]`
+`puts response.status`
 
 ## Development
 
