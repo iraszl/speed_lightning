@@ -1,5 +1,10 @@
 ## [Unreleased]
 
+## [0.2.1] - 2026-05-31
+
+### Changed
+- Updated the HTTParty dependency requirement to allow patched versions.
+
 ## [0.2.0] - 2023-10-24
 
 ### Added

@@ -1,18 +1,22 @@
 PATH
   remote: .
   specs:
-    speed_lightning (0.2.0)
-      httparty (~> 0.21.0)
+    speed_lightning (0.2.1)
+      httparty (>= 0.24.0, < 1.0)
 
 GEM
   remote: https://rubygems.org/
   specs:
-    httparty (0.21.0)
+    bigdecimal (4.1.2)
+    csv (3.3.5)
+    httparty (0.24.2)
+      csv
       mini_mime (>= 1.0.0)
       multi_xml (>= 0.5.2)
     mini_mime (1.1.5)
     minitest (5.20.0)
-    multi_xml (0.6.0)
+    multi_xml (0.9.1)
+      bigdecimal (>= 3.1, < 5)
     rake (13.0.6)
 
 PLATFORMS
@@ -25,4 +29,4 @@ DEPENDENCIES
   speed_lightning!
 
 BUNDLED WITH
-   2.2.20
+   2.7.1
